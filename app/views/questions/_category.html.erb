@@ -1,0 +1,33 @@
+<!--
+  File: _category.html.erb
+  Purpose: This View that shows the year, the number and the wording of the question.
+  License : LGPL. No copyright.
+ -->
+
+<% if !@questions.blank? %>
+
+  <table class='table'>
+
+    <thead>
+      <th>Ano</th>
+      <th>Número</th>
+      <th>Enunciado</th>
+    </thead>
+
+    <% @questions.each do |questions| %>
+
+      <tr>
+        <td><%= questions.year %></td>
+        <td><%= link_to (questions.number, "/questions/#{t.id}") %></td>
+        <td><%= questions.enunciation %></td>
+      </tr>
+      
+    <% end %>
+  </table>
+
+<% else %> 
+  <!-- nothing to do -->
+
+  <h3> Não existem recomendações de questões no momento. </h3>
+
+<% end %>
