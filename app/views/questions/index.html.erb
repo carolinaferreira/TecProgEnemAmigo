@@ -1,0 +1,40 @@
+<!--
+  File: languages.erb
+  Purpose: This View that show the list of the question.
+  License : LGPL. No copyright.
+ -->
+
+<h1> Lista de Questões </h1>
+
+<% if current_user.role_admin? %>
+	<%= link_to ('Novas Questões', new_question_path, class: "btn btn-success")  %>
+
+<% end %>
+	<%else%>
+		<!-- nothing to do -->
+
+<% if !@questions.blank? %>
+	<table class='table'>
+		<thead>
+			<th>Ano</th>
+			<th>Número</th>
+			<th>Área</th>
+			<th>Enunciado</th>
+		</thead>
+
+		<% @questions.each do |questions| %>
+			<tr>
+				<td class="align-center"><%= questions.year %></td>
+				<td class="align-center"><%= link_to (questions.number, "/questions/#{questions.id}") %></td>
+				<td><%= questions.area %></td>
+				<td><%= truncate(questions.enunciation, length: 180, separator: ' ') %></td>
+			</tr>
+
+		<% end %>
+	</table>
+
+<% else %>
+
+	<h3> Não há questões cadastradas no momento. </h3>
+
+<% end %>

@@ -1,0 +1,7 @@
+== TecProg 2016/02 - ENEM Amigo - Grupo 02
+
+* Aplicação para auxílio nos estudos para o ENEM (Exame Nacional do Ensino Médio). 
+
+* Projeto da disciplina Técnicas de Programação (TecProg) do curso de Engenharia de Software, Campus UnB Gama.
+
+* [Repositório 2 - Avalia +] (https://github.com/carolinaferreira/TecProgAvaliaMais)

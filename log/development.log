@@ -1,0 +1,921 @@
+  [1m[36m (1.5ms)[0m  [1mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL) [0m
+  [1m[35m (26.4ms)[0m  select sqlite_version(*)
+  [1m[36m (1.4ms)[0m  [1mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.1ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+Migrating to CreateUsers (20150919193450)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.3ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20150919193450"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddPasswordDigestToUser (20150919194845)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.8ms)[0m  ALTER TABLE "users" ADD "password_digest" varchar
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20150919194845"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to CreateQuestions (20150919203200)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  CREATE TABLE "questions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20150919203200"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to CreateAlternatives (20150919243700)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "alternatives" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "question_id" integer, "letter" varchar, "description" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_alternatives_on_question_id" ON "alternatives" ("question_id")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150919243700"]]
+  [1m[36m (1.3ms)[0m  [1mcommit transaction[0m
+Migrating to AddRightAnswerToQuestion (20150928235200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "questions" ADD "right_answer" varchar[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150928235200"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddPointsToUser (20150928235600)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "points" integer[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150928235600"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddAcceptedQuestionsToUser (20150928241200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "accepted_questions" text[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150928241200"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddRoleAdminToUser (20150929205059)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "users" ADD "role_admin" boolean[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20150929205059"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddDefaultValuesToUser (20150930202200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer, "accepted_questions" text, "role_admin" boolean) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "users"
+  [1m[36m (0.8ms)[0m  [1mDROP TABLE "users"[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "ausers"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "ausers"
+  [1m[36m (0.1ms)[0m  [1mCREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "users"
+  [1m[36m (0.4ms)[0m  [1mDROP TABLE "users"[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "ausers"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "ausers"
+  [1m[36m (0.2ms)[0m  [1mCREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "users"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "users"[0m
+  [1m[35m (0.1ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f') 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "ausers"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "ausers"
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20150930202200"]]
+  [1m[35m (2.0ms)[0m  commit transaction
+Migrating to AddTextToQuestions (20151001033652)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.6ms)[0m  ALTER TABLE "questions" ADD "text" text
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151001033652"]]
+  [1m[35m (1.0ms)[0m  commit transaction
+Migrating to AddTriesToQuestions (20151001120158)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "questions" ADD "tries" integer
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151001120158"]]
+  [1m[35m (1.1ms)[0m  commit transaction
+Migrating to AddHitsToQuestions (20151001120208)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "questions" ADD "hits" integer
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151001120208"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddDefaultValueToHitsAndTriesFromQuestion (20151001120855)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "aquestions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer, "hits" integer) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "questions"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "questions"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "questions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer, "hits" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "aquestions"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "aquestions"[0m
+  [1m[35m (0.1ms)[0m  CREATE TEMPORARY TABLE "aquestions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer, "hits" integer DEFAULT 0) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "questions"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "questions"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "questions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer DEFAULT 0, "hits" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "aquestions"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "aquestions"[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151001120855"]]
+  [1m[36m (2.1ms)[0m  [1mcommit transaction[0m
+Migrating to CreateCandidates (20151001183343)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.7ms)[0m  [1mCREATE TABLE "candidates" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "general_average" decimal, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151001183343"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddUsersHitsToQuestion (20151001234200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "questions" ADD "users_hits" integer DEFAULT 0[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151001234200"]]
+  [1m[36m (1.5ms)[0m  [1mcommit transaction[0m
+Migrating to AddUsersTriesToQuestion (20151001234500)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "questions" ADD "users_tries" integer DEFAULT 0[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151001234500"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddIndexToUsers (20151002135900)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151002135900"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to AddIndexToQuestions (20151002140200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE  INDEX "index_questions_on_number" ON "questions" ("number")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_number' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_questions_on_year" ON "questions" ("year")[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151002140200"]]
+  [1m[36m (1.9ms)[0m  [1mcommit transaction[0m
+Migrating to CreateTopics (20151018145956)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "topics" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "question_id" integer, "description" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151018145956"]]
+  [1m[36m (1.3ms)[0m  [1mcommit transaction[0m
+Migrating to CreatePosts (20151018150120)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mCREATE TABLE "posts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151018150120"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateComments (20151018150420)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "comments" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "content" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151018150420"]]
+  [1m[36m (1.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddForeignToPosts (20151018152353)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "posts" ADD "topic_id" integer[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "posts" ADD "user_id" integer
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151018152353"]]
+  [1m[35m (1.4ms)[0m  commit transaction
+Migrating to AddForeignToComments (20151018152645)
+  [1m[36m (0.2ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "comments" ADD "post_id" integer
+  [1m[36m (0.3ms)[0m  [1mALTER TABLE "comments" ADD "user_id" integer[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151018152645"]]
+  [1m[36m (1.7ms)[0m  [1mcommit transaction[0m
+Migrating to AddUserRatingsForPost (20151020181900)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "posts" ADD "user_ratings" text[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151020181900"]]
+  [1m[36m (25.7ms)[0m  [1mcommit transaction[0m
+Migrating to CreateMedals (20151020184000)
+  [1m[35m (0.2ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "medals" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "description" text, "image" varchar, "achieved_instructions" text, "message_instructions" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151020184000"]]
+  [1m[36m (7.7ms)[0m  [1mcommit transaction[0m
+Migrating to AddUsersAndMedals (20151021134000)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "medals_users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "medal_id" integer, "user_id" integer) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151021134000"]]
+  [1m[36m (1.6ms)[0m  [1mcommit transaction[0m
+Migrating to AddUserRatingsForComment (20151023010900)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "comments" ADD "user_ratings" text[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151023010900"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateNotifications (20151105192500)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TABLE "notifications" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "message" text, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151105192500"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateExams (20151105204756)
+  [1m[35m (0.0ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "exams" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "questions" text) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151105204756"]]
+  [1m[36m (1.2ms)[0m  [1mcommit transaction[0m
+Migrating to CreateBattles (20151106003200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "battles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean, "player_2_start" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) [0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151106003200"]]
+  [1m[36m (1.5ms)[0m  [1mcommit transaction[0m
+Migrating to AddBattleRefToNotifications (20151106004012)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "notifications" ADD "battle_id" integer[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_notifications_on_battle_id" ON "notifications" ("battle_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151106004012"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddUserRefToBattles (20151106004100)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "battles" ADD "player_1_id" integer
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_battles_on_player_1_id" ON "battles" ("player_1_id")[0m
+  [1m[35m (0.3ms)[0m  ALTER TABLE "battles" ADD "player_2_id" integer
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_battles_on_player_2_id" ON "battles" ("player_2_id")
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151106004100"]]
+  [1m[35m (1.5ms)[0m  commit transaction
+Migrating to AddAnsweredExamsToUsers (20151106172200)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  ALTER TABLE "users" ADD "answered_exams" text
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151106172200"]]
+  [1m[35m (2.3ms)[0m  commit transaction
+Migrating to AddUserRefToNotifications (20151107135013)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "notifications" ADD "user_id" integer
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_notifications_on_battle_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_notifications_on_battle_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_notifications_on_user_id" ON "notifications" ("user_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151107135013"]]
+  [1m[35m (1.9ms)[0m  commit transaction
+Migrating to AddBattlePointsToUser (20151108151900)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "battle_points" integer
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151108151900"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddDefaultValuesToBattlePoints (20151108153000)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  CREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f', "answered_exams" text, "battle_points" integer) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE UNIQUE INDEX "tindex_ausers_on_email" ON "ausers" ("email")
+  [1m[36m (0.3ms)[0m  [1mSELECT * FROM "users"[0m
+  [1m[35m (0.4ms)[0m  DROP TABLE "users"
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f', "answered_exams" text, "battle_points" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+
+  [1m[36m (0.7ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "ausers"
+  [1m[36m (0.3ms)[0m  [1mDROP TABLE "ausers"[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151108153000"]]
+  [1m[36m (20.5ms)[0m  [1mcommit transaction[0m
+Migrating to AddWinnerRefToBattles (20151109165300)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "battles" ADD "winner_id" integer[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_battles_on_winner_id" ON "battles" ("winner_id")
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151109165300"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddWinsToUser (20151109195800)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "wins" integer
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151109195800"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddDefaultValuesToWins (20151109200000)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f', "answered_exams" text, "battle_points" integer DEFAULT 0, "wins" integer) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE UNIQUE INDEX "tindex_ausers_on_email" ON "ausers" ("email")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "users"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "users"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f', "answered_exams" text, "battle_points" integer DEFAULT 0, "wins" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+
+  [1m[36m (0.3ms)[0m  [1mCREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "ausers"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "ausers"[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151109200000"]]
+  [1m[36m (2.1ms)[0m  [1mcommit transaction[0m
+Migrating to AddRightAnswersToExams (20151109223600)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.5ms)[0m  [1mALTER TABLE "exams" ADD "right_answers" text[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151109223600"]]
+  [1m[36m (1.3ms)[0m  [1mcommit transaction[0m
+Migrating to AddQuestionsAndBattles (20151110105200)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TABLE "battles_questions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "battle_id" integer, "question_id" integer) [0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151110105200"]]
+  [1m[36m (1.4ms)[0m  [1mcommit transaction[0m
+Migrating to AddProcessedToBattle (20151110221900)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "battles" ADD "processed" boolean[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151110221900"]]
+  [1m[36m (1.5ms)[0m  [1mcommit transaction[0m
+Migrating to AddUserAnswersAndAcceptedAnswersToExams (20151111082300)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "exams" ADD "user_answers" text[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "exams" ADD "accepted_answers" integer
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151111082300"]]
+  [1m[35m (1.3ms)[0m  commit transaction
+Migrating to AddDefaultValueToAcceptedAnswersToExams (20151111083200)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "aexams" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "questions" text, "right_answers" text, "user_answers" text, "accepted_answers" integer) 
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "exams"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "exams"
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "exams" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "questions" text, "right_answers" text, "user_answers" text, "accepted_answers" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "aexams"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "aexams"[0m
+  [1m[35mSQL (0.3ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151111083200"]]
+  [1m[36m (1.6ms)[0m  [1mcommit transaction[0m
+Migrating to AddVisualizedToNotification (20151112093500)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mALTER TABLE "notifications" ADD "visualized" boolean[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151112093500"]]
+  [1m[36m (1.4ms)[0m  [1mcommit transaction[0m
+Migrating to AddDefaultValuesToBattle (20151112152400)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.2ms)[0m  [1mCREATE TEMPORARY TABLE "abattles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean, "player_2_start" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "player_1_id" integer, "player_2_id" integer, "winner_id" integer, "processed" boolean) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_abattles_on_winner_id" ON "abattles" ("winner_id")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_abattles_on_player_2_id" ON "abattles" ("player_2_id")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_abattles_on_player_1_id" ON "abattles" ("player_1_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "battles"
+  [1m[36m (0.4ms)[0m  [1mDROP TABLE "battles"[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "battles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean DEFAULT 'f', "player_2_start" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "player_1_id" integer, "player_2_id" integer, "winner_id" integer, "processed" boolean) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_player_2_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_winner_id' AND type='index'
+[0m
+  [1m[35m (0.3ms)[0m  CREATE  INDEX "index_battles_on_player_1_id" ON "battles" ("player_1_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_battles_on_player_2_id" ON "battles" ("player_2_id")
+  [1m[36m (0.2ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_battles_on_winner_id" ON "battles" ("winner_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "abattles"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "abattles"[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "abattles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean DEFAULT 'f', "player_2_start" boolean, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "player_1_id" integer, "player_2_id" integer, "winner_id" integer, "processed" boolean) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_abattles_on_winner_id" ON "abattles" ("winner_id")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_abattles_on_player_2_id" ON "abattles" ("player_2_id")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_abattles_on_player_1_id" ON "abattles" ("player_1_id")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "battles"[0m
+  [1m[35m (0.4ms)[0m  DROP TABLE "battles"
+  [1m[36m (0.1ms)[0m  [1mCREATE TABLE "battles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean DEFAULT 'f', "player_2_start" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "player_1_id" integer, "player_2_id" integer, "winner_id" integer, "processed" boolean) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_player_2_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_winner_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_battles_on_player_1_id" ON "battles" ("player_1_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_battles_on_player_2_id" ON "battles" ("player_2_id")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_battles_on_winner_id" ON "battles" ("winner_id")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "abattles"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "abattles"
+  [1m[36m (0.2ms)[0m  [1mCREATE TEMPORARY TABLE "abattles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean DEFAULT 'f', "player_2_start" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "player_1_id" integer, "player_2_id" integer, "winner_id" integer, "processed" boolean) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_abattles_on_winner_id" ON "abattles" ("winner_id")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_abattles_on_player_2_id" ON "abattles" ("player_2_id")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_abattles_on_player_1_id" ON "abattles" ("player_1_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "battles"
+  [1m[36m (0.1ms)[0m  [1mDROP TABLE "battles"[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "battles" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "player_1_answers" text, "player_2_answers" text, "category" varchar, "player_1_time" integer, "player_2_time" integer, "player_1_start" boolean DEFAULT 'f', "player_2_start" boolean DEFAULT 'f', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "player_1_id" integer, "player_2_id" integer, "winner_id" integer, "processed" boolean DEFAULT 'f') 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_player_2_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_abattles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_abattles_on_winner_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "index_battles_on_player_1_id" ON "battles" ("player_1_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_battles_on_player_2_id" ON "battles" ("player_2_id")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.2ms)[0m  [1mCREATE  INDEX "index_battles_on_winner_id" ON "battles" ("winner_id")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "abattles"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "abattles"[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151112152400"]]
+  [1m[36m (25.4ms)[0m  [1mcommit transaction[0m
+Migrating to AddDefaultValueToImageToQuestion (20151114200700)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.3ms)[0m  [1mCREATE TEMPORARY TABLE "aquestions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer DEFAULT 0, "hits" integer DEFAULT 0, "users_hits" integer DEFAULT 0, "users_tries" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_year' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_year' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_number' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  CREATE  INDEX "tindex_aquestions_on_year" ON "aquestions" ("year")
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_aquestions_on_number" ON "aquestions" ("number")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "questions"
+  [1m[36m (0.4ms)[0m  [1mDROP TABLE "questions"[0m
+  [1m[35m (0.2ms)[0m  CREATE TABLE "questions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar DEFAULT '', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer DEFAULT 0, "hits" integer DEFAULT 0, "users_hits" integer DEFAULT 0, "users_tries" integer DEFAULT 0) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_aquestions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_aquestions_on_number' AND type='index'
+[0m
+  [1m[35m (0.4ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_aquestions_on_year' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_aquestions_on_year' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_questions_on_number" ON "questions" ("number")[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_number' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "index_questions_on_year" ON "questions" ("year")[0m
+  [1m[35m (0.1ms)[0m  SELECT * FROM "aquestions"
+  [1m[36m (0.2ms)[0m  [1mDROP TABLE "aquestions"[0m
+  [1m[35mSQL (0.1ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151114200700"]]
+  [1m[36m (2.4ms)[0m  [1mcommit transaction[0m
+Migrating to AddExamPerformanceAndExamsTotalQuestionsToUser (20151116144600)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "users" ADD "exam_performance" text[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "users" ADD "exams_total_questions" integer DEFAULT 0
+  [1m[36mSQL (0.2ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151116144600"]]
+  [1m[35m (18.4ms)[0m  commit transaction
+Migrating to AddTriedQuestionsToUsers (20151119115612)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "users" ADD "tried_questions" text
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151119115612"]]
+  [1m[35m (1.8ms)[0m  commit transaction
+Migrating to AddAttachmentProfileImageToUser (20151124162400)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (1.1ms)[0m  ALTER TABLE "users" ADD "profile_image_file_name" varchar
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "users" ADD "profile_image_content_type" varchar[0m
+  [1m[35m (0.2ms)[0m  ALTER TABLE "users" ADD "profile_image_file_size" integer
+  [1m[36m (0.2ms)[0m  [1mALTER TABLE "users" ADD "profile_image_updated_at" datetime[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151124162400"]]
+  [1m[36m (1.9ms)[0m  [1mcommit transaction[0m
+Migrating to AddDefaultValueToProfileImageToUser (20151124224600)
+  [1m[35m (0.1ms)[0m  begin transaction
+  [1m[36m (0.4ms)[0m  [1mCREATE TEMPORARY TABLE "ausers" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f', "answered_exams" text, "battle_points" integer DEFAULT 0, "wins" integer DEFAULT 0, "exam_performance" text, "exams_total_questions" integer DEFAULT 0, "tried_questions" text, "profile_image_file_name" varchar, "profile_image_content_type" varchar, "profile_image_file_size" integer, "profile_image_updated_at" datetime) [0m
+  [1m[35m (0.6ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+
+  [1m[36m (0.4ms)[0m  [1mCREATE UNIQUE INDEX "tindex_ausers_on_email" ON "ausers" ("email")[0m
+  [1m[35m (0.3ms)[0m  SELECT * FROM "users"
+  [1m[36m (0.7ms)[0m  [1mDROP TABLE "users"[0m
+  [1m[35m (0.3ms)[0m  CREATE TABLE "users" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "nickname" varchar, "name" varchar, "email" varchar, "level" integer DEFAULT 0, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "password_digest" varchar, "points" integer DEFAULT 0, "accepted_questions" text, "role_admin" boolean DEFAULT 'f', "answered_exams" text, "battle_points" integer DEFAULT 0, "wins" integer DEFAULT 0, "exam_performance" text, "exams_total_questions" integer DEFAULT 0, "tried_questions" text, "profile_image_file_name" varchar DEFAULT '', "profile_image_content_type" varchar, "profile_image_file_size" integer, "profile_image_updated_at" datetime) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_ausers_on_email' AND type='index'
+[0m
+  [1m[35m (0.4ms)[0m  CREATE UNIQUE INDEX "index_users_on_email" ON "users" ("email")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "ausers"[0m
+  [1m[35m (0.1ms)[0m  DROP TABLE "ausers"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151124224600"]]
+  [1m[35m (2.6ms)[0m  commit transaction
+Migrating to CreateTexts (20151126003325)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.4ms)[0m  CREATE TABLE "texts" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar, "paragraphs" text, "reference" varchar, "question_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL) 
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151126003325"]]
+  [1m[35m (2.0ms)[0m  commit transaction
+Migrating to RemoveTextColumnFromQuestions (20151126004320)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  CREATE TEMPORARY TABLE "aquestions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar DEFAULT '', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "text" text, "tries" integer DEFAULT 0, "hits" integer DEFAULT 0, "users_hits" integer DEFAULT 0, "users_tries" integer DEFAULT 0) 
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_year' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_year' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_number' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1mCREATE  INDEX "tindex_aquestions_on_year" ON "aquestions" ("year")[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "tindex_aquestions_on_number" ON "aquestions" ("number")
+  [1m[36m (0.1ms)[0m  [1mSELECT * FROM "questions"[0m
+  [1m[35m (0.3ms)[0m  DROP TABLE "questions"
+  [1m[36m (0.2ms)[0m  [1mCREATE TABLE "questions" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "year" integer, "area" varchar, "number" integer, "enunciation" varchar, "reference" varchar, "image" varchar DEFAULT '', "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, "right_answer" varchar, "tries" integer DEFAULT 0, "hits" integer DEFAULT 0, "users_hits" integer DEFAULT 0, "users_tries" integer DEFAULT 0) [0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_aquestions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_aquestions_on_number' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='tindex_aquestions_on_year' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='tindex_aquestions_on_year' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_questions_on_number" ON "questions" ("number")
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_number' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  CREATE  INDEX "index_questions_on_year" ON "questions" ("year")
+  [1m[36m (0.2ms)[0m  [1mSELECT * FROM "aquestions"[0m
+  [1m[35m (0.2ms)[0m  DROP TABLE "aquestions"
+  [1m[36mSQL (0.1ms)[0m  [1mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20151126004320"]]
+  [1m[35m (2.8ms)[0m  commit transaction
+Migrating to AddLinkAndSenderToNotifications (20151130142900)
+  [1m[36m (0.1ms)[0m  [1mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  ALTER TABLE "notifications" ADD "link" varchar
+  [1m[36m (0.6ms)[0m  [1mALTER TABLE "notifications" ADD "sender" varchar[0m
+  [1m[35mSQL (0.2ms)[0m  INSERT INTO "schema_migrations" ("version") VALUES (?)  [["version", "20151130142900"]]
+  [1m[36m (2.6ms)[0m  [1mcommit transaction[0m
+  [1m[35mActiveRecord::SchemaMigration Load (0.4ms)[0m  SELECT "schema_migrations".* FROM "schema_migrations"
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_alternatives_on_question_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_alternatives_on_question_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_winner_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_2_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_battles_on_player_1_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_notifications_on_user_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_notifications_on_user_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_notifications_on_battle_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_notifications_on_battle_id' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_year' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_year' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m              SELECT sql
+            FROM sqlite_master
+            WHERE name='index_questions_on_number' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_questions_on_number' AND type='index'
+
+  [1m[36m (0.1ms)[0m  [1m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_users_on_email' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_users_on_email' AND type='index'
+[0m
+
+
+Started GET "/" for ::1 at 2016-08-29 09:26:35 -0300
+  [1m[36mActiveRecord::SchemaMigration Load (0.5ms)[0m  [1mSELECT "schema_migrations".* FROM "schema_migrations"[0m
+Processing by StaticPagesController#home as HTML
+  [1m[35mUser Load (13.5ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1
+Redirected to http://localhost:3000/login?locale=en
+Filter chain halted as :authenticate_user rendered or redirected
+Completed 302 Found in 209ms (ActiveRecord: 13.8ms)
+
+
+Started GET "/login?locale=en" for ::1 at 2016-08-29 09:26:36 -0300
+Processing by SessionsController#new as HTML
+  Parameters: {"locale"=>"en"}
+  [1m[36mUser Load (0.2ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  Rendered sessions/new.html.erb within layouts/application (32.0ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1
+  [1m[36mCACHE (0.0ms)[0m  [1mSELECT  "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1[0m
+  Rendered layouts/_header.html.erb (24.9ms)
+  [1m[35mCACHE (0.0ms)[0m  SELECT  "users".* FROM "users" WHERE "users"."id" IS NULL LIMIT 1
+  Rendered layouts/_footer.html.erb (0.9ms)
+Completed 200 OK in 6100ms (Views: 6098.9ms | ActiveRecord: 0.3ms)
+
+
+Started GET "/assets/header.self-586c34a008f467c84f523219192e3fa10fee103a3b9154238ef7d0769f055903.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/medals.self-ccfa240acf09d9ec4c9f6aa89ec63136ae9a0545530e318d5bee0ba7ab22fb2b.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/footer.self-ab147b3627ad3bec87cd9977c70ede2a65f3847e82c0a3bfaba9388a3168542c.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/questions.self-3c7219ebeebe21bf99d6ad8dee1c140848409e790c9485e00ea78ed6e34d664c.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/style.self-71d2a6988172fed5145423908e7b3b7d9279e8cd8904636c9dbada5e4a471986.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/topics.self-f480c00dfa2ee09fd23fb22ad809705267b9e42e3fc1ed3d4b07ef44f9d8ff1e.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/users.self-07ddabb5aa1701e9891707d97b5533e98660c520d5840a419db3de34c3539791.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/chartkick.self-7010ffed46fac5bbe1085299c71082d20e021512d491f9c4094e2a3bc3b9c356.js?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/bootstrap.self-cdea7efeac1597b89ddd6fd86b0e8e0bec5d5fb1fac9c6e8a045f2c59eef2d13.js?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/application.self-e80e8f2318043e8af94dddc2adad5a4f09739a8ebb323b3ab31cd71d45fd9113.css?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/turbolinks.self-c5acd7a204f5f25ce7a1d8a0e4d92e28d34c9e2df2c7371cd7af88e147e4ad82.js?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/custom.self-4eae4445a56062fdf8edb48cbad2a182bc9e1c05151b7106cab7c4e6421db6a5.js?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/application.self-7862a8a8b42407b4741a1adeeea35f0d13ddc4f702ec532adb0674491d296495.js?body=1" for ::1 at 2016-08-29 09:26:42 -0300
+
+
+Started GET "/assets/enem-amigo-437b495617f8759b2c995f9af099c52eda6d74e0579c15ff77fd8af36f2d6a27.png" for ::1 at 2016-08-29 09:26:43 -0300
+
+
+Started GET "/assets/background-78b77997bdb38da2116e1e02f7fa7e709c2c105c2571977cebb90f05ad9d95d5.png" for ::1 at 2016-08-29 09:26:43 -0300

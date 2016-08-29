@@ -1,0 +1,23 @@
+<!--
+ File: _ranking.html.erb
+ Purpose: The 10 best users of application
+ License : LGPL. No copyright.
+-->
+
+<table class="ranking">
+
+  <thead>
+    <tr class="clickable-row" data-href=<%= ranking_path %> >
+      <th><%= link_to(image_tag("trophy.jpg"), ranking_path) %> <span>TOP 10</span></th>
+    </tr>
+  </thead>
+
+  <tbody>
+  <% top10.each do |users| %>
+    <tr>
+      <td><%= link_to(users.name, "/users/#{users.id}") %></td>
+    </tr>
+  <% end %>
+  </tbody>
+
+</table>

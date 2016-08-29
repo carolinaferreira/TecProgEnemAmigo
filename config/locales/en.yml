@@ -1,0 +1,142 @@
+# Files in the config/locales directory are used for internationalization
+# and are automatically loaded by Rails. If you want to use locales other
+# than English, add the necessary files in this directory.
+#
+# To use the locales, use `I18n.t`:
+#
+#     I18n.t 'hello'
+#
+# In views, this is aliased to just `t`:
+#
+#     <%= t('hello') %>
+#
+# To use a different locale, set it with `I18n.locale`:
+#
+#     I18n.locale = :es
+#
+# This would use the information in config/locales/es.yml.
+#
+# To learn more, please read the Rails Internationalization guide
+# available at http://guides.rubyonrails.org/i18n.html.
+
+en:
+  logged: "Sucessfully logged in"
+  invalid: "Invalid combination of e-mail/password"
+  update_question: "Sucessfully updated question!"
+  detele_question: "Sucessfully deleted question!"
+  upload_message_question: "Sucessfully uploaded questons!"
+  upload_message_data: "Sucessfully uploaded datas!"
+  invitation_battle: "Invitation has been sucessfully sent"
+  user_not_found: "User not found"
+  finish_battle: "Battle was sucessfully finished"
+  created_comment: "The comment was sucessfully created"
+  update_comment: "The comment was sucessfully updated"
+  delete_comment: "The comment was sucessfully deleted"
+  year_exam_not_found: "No registered questions of this years!"
+  exam_not_found: "No registered questions!"
+  exam_message: "You should answer an exam to see your result"
+  create_post: "Post was sucessfully created"
+  update_post: "Post was sucessfully updated"
+  deleted_post: "Post was sucessfully deleted"
+  create_topic: "Topic was sucessfully created"
+  delete_user: "User was sucessfully deleted"
+  create_user: "User was sucessfully created"
+  update_user: "User was sucessfully updated"
+  delete_photo: "Photo was sucessfully deleted"
+  error_delete_photo: "There isn't a photo to be deleted"
+
+  static_pages:
+    home:
+      title: "Enem Amigo"
+      progress: "My progress"
+      description_questions: "Train for ENEM answering questions from previous tests!"
+      description_battles: "Invite users or your friends to a frenetic intellectual dispute with ENEM questions!"
+      description_exams: "Simulate the conditions of a real ENEM exam to improve your performance!"
+
+  layouts:
+    _header:
+      question: "Questions"
+      battle: "Battle"
+      exam: "Exam"
+      forum: "Forum"
+      begin: "Home"
+      users: "Users"
+      notifications: "Notifications"
+      seemore: "See more"
+      my_account: "My account"
+      edit_profile: "Edit my profile"
+      logout: "Log out"
+      register: "Sign up"
+    _footer:
+      help: "Help"
+      about: "About"
+
+  users:
+    _profile_sidebar:
+      level: "Level"
+      position: "Position"
+      resolved: "Resolved"
+      score: "My score"
+      medal: "Medals"  
+      hello: "Hello world"
+
+
+pt:
+  logged: "Logado com sucesso!"
+  invalid: "Combinação'inválida de e-mail/senha"
+  update_question: "Questão atualizada com sucesso!"
+  delete_question: "Questão deletada com sucesso!"
+  upload_message_question: "Questões armazenadas com sucesso!"
+  upload_message_data: "Dados armazenados com sucesso!"
+  invitation_battle: "Convite enviado com sucesso!"
+  user_not_found: "Usuário não encontrado"
+  finish_battle: "Batalha finalizada com sucesso!"
+  created_comment: "Seu comentário foi criado com sucesso!"
+  update_comment: "Seu comentário foi atualizado com sucesso!"
+  delete_comment: "Seu comentário foi deletado com sucesso!"
+  year_exam_not_found: "Não há questões cadastradas neste ano"
+  exam_not_found: "Não há questões cadastradas!"
+  exam_message: "Você deve responder uma prova antes para obter seu resultado!"
+  create_post: "Postagem criada com sucesso!"
+  update_post: "Seu post foi atualizado com sucesso"
+  delete_post: "Post deletado com sucesso"
+  create_topic: "Tópico foi criado com sucesso!"
+  delete_user: "Usário deletado"
+  create_user: "Usúário criado com sucesso!"
+  update_user: "Usuário atualizado"
+  deleted_photo: "Foto de perfil removida com sucesso!"
+  error_delete_photo: "Não há foto de perfil para ser removida"
+
+  static_pages:
+    home:
+      title: "Enem Amigo"
+      progress: "Meu Progresso"
+      description_questions: "Treine para o ENEM respondendo questões de provas anteriores!"
+      description_battles: "Convide usuários ou seus amigos para uma disputa intelectual frenética com questões do ENEM!"
+      description_exams: "Simule as condições de uma prova real do ENEM para melhorar seu desempenho!"
+
+  layouts:
+    _header:
+      question: "Questões"
+      battle: "Batalha"
+      exam: "Prova"
+      forum: "Fórum"
+      begin: "Início"
+      users: "Usuários"
+      notifications: "Notificações"
+      seemore: "Ver mais"
+      my_account: "Minha conta"
+      edit_profile: "Editar minha conta"
+      logout: "Sair"
+      register: "Cadastre-se"
+    _footer:
+      help: "Ajuda"
+      about: "Sobre"
+
+  users:
+    _profile_sidebar:
+      level: "Nível"
+      position: "Posição"
+      resolved: "Resolvido"
+      score: "Meu desempenho"
+      medal: "Medalhas"

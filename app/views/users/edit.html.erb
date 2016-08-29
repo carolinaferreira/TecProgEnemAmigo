@@ -1,0 +1,35 @@
+<!--
+ File: edit.html.erb
+ Purpose: Form to collect information to update a user
+ License : LGPL. No copyright.
+-->
+
+<h1> Alterar Dados </h1>
+
+<%= render 'form_errors' %>
+
+<%= form_for(@user) do |form| %>
+  <%= form.label(:nickname, "Nome de Usuário") %>
+  <%= form.text_field(:nickname, class: 'form-control') %>
+  <%= form.label(:name, "Nome Completo") %>
+  <%= form.text_field(:name, class: 'form-control') %>
+  <%= form.label(:email, "E-mail") %>
+  <%= form.text_field(:email, class: 'form-control') %>
+  <%= form.label(:password, "Senha") %>
+  <%= form.password_field(:password, class: 'form-control') %>
+  <%= form.label(:password_confirmation, "Confirmar senha") %>
+  <%= form.password_field(:password_confirmation, class: 'form-control') %>
+  <div>
+    <%= form.label(:profile_image, "Foto de Perfil") %>
+    <% if !current_user.profile_image_file_name.blank? %>
+      <%= link_to('Remover foto', delete_profile_image_path, class: 'btn btn-danger', id: 'delete-image', data: { confirm: "Você tem certeza que deseja remover a foto?" }) %>
+    <% else %>
+      <!-- nothing to do -->
+    <% end %>
+  </div>
+  <span class="btn btn-default btn-file">
+    Browse<%= form.file_field(:profile_image, class: 'form-control') %>
+  </span>
+  <%= form.submit("Atualizar Dados", class: 'btn btn-primary') %>
+
+<% end %>

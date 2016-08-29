@@ -1,0 +1,30 @@
+<!--
+ File: new.html.erb
+ Purpose: Form to collect information to create a user
+ License : LGPL. No copyright.
+-->
+
+<h1>Cadastro</h1>
+
+<%= render('form_errors') %>
+
+<%= form_for(@user) do |form| %>
+  <%= form.label(:nickname, "Nome de Usuário") %>
+  <%= form.text_field(:nickname, class: 'form-control') %>
+  <%= form.label(:name, "Nome Completo") %>
+  <%= form.text_field(:name, class: 'form-control') %>
+  <%= form.label(:email, "E-mail") %>
+  <%= form.text_field(:email, class: 'form-control') %>
+  <%= form.label(:password, "Senha") %>
+  <%= form.password_field(:password, class: 'form-control') %>
+  <%= form.label(:password_confirmation, "Confirmar senha") %>
+  <%= form.password_field(:password_confirmation, class: 'form-control') %>
+  <div>
+    <%= form.label(:profile_image, "Foto de Perfil") %>
+  </div>
+  <span class="btn btn-default btn-file">
+    Browse<%= form.file_field(:profile_image, class: 'form-control') %>
+  </span>
+  <%= form.submit("Cadastrar", class: 'btn btn-primary') %>
+
+<% end %>
